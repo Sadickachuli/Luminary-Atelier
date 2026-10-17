@@ -26,9 +26,9 @@ Pulled from the logo (ink) and the photos (carved walnut doors, her terracotta a
 | `--walnut` | `#5A3E2B` | Rules, borders, hover states, footer background. |
 | `--ember` | `#A24A26` | The one accent. Links, the active nav line, focus rings, TBC outlines. Use sparingly. |
 | `--night` | `#12141C` | The single dark section (Philosophy). |
-| `--amber` | `#D69A4A` | Only on `--night`: the "lit" state of words in the Philosophy scroll effect. |
+| `--amber` | `#D69A4A` | Only on `--night`: the lit state of the Philosophy headline. Body words light to ivory, not amber. |
 
-Contrast (WCAG): ink on ivory 16.2, walnut on ivory 8.5, ember on ivory 5.2, stone on ivory 5.0, ivory on night 16.1, amber on night 7.5, ember on linen 4.6. All pass AA for body text.
+Contrast (WCAG): ink on ivory 16.2, walnut on ivory 8.5, ember on ivory 5.2, stone on ivory 5.0, ivory on night 16.1, amber on night 7.5, ember on linen 4.6. All pass AA for body text. [TBC] outlines use `--ember` on light backgrounds and ivory on the walnut footer.
 
 Ratio of use, roughly: 80% ivory and linen, 15% ink and walnut, 5% ember, amber and night together.
 
@@ -60,9 +60,9 @@ Use `font-display: swap`, preconnect to Google Fonts, and load only the weights 
 
 ### Section by section
 
-1. **Header**: small logo left (about 56px tall on desktop, 44px on mobile), nav right in Jost uppercase. Transparent over the hero; once scrolled, ivory at 92% with a hairline bottom rule. Hides on scroll down, returns on scroll up.
-2. **Opening (hero)**: split layout, not full-bleed (the photos are portrait and too small to stretch edge to edge). Left 6 columns: eyebrow-sized logo rule, the tagline as h1, the subline, the intro line, the button. Right 5 columns: photo 7 in a tall 4:5 frame. On mobile, the photo comes first at 4:5, text below.
-3. **Philosophy**: the only dark section, on `--night`. Centered text column. Italic headline "Someone was listening." Photo 4 (the horizon at first light) sits as a narrow band above the headline or as a very dark background at 25% opacity behind it, never under body text. This is where the signature motion happens (see Motion).
+1. **Header**: left, the LA monogram cropped from the PNG (about 44px tall on desktop, 36px on mobile) beside the name "LUMINARY ATELIER" set as live text in Jost 500 uppercase, letter-spacing 0.22em, matching the wordmark. The full logo with its wordmark is too small to read at header size. Nav right in Jost uppercase. Transparent over the hero; once scrolled, ivory at 92% with a hairline bottom rule. Hides on scroll down, returns on scroll up.
+2. **Opening (hero)**: split layout, not full-bleed (the photos are portrait and too small to stretch edge to edge). Left 6 columns: a short 1px CSS hairline (about 56px wide, `--walnut`), the tagline as h1, the subline, the intro line, the button. Right 5 columns: photo 7 in a tall 4:5 frame, capped at about 480px wide on desktop so the current low-resolution file stays reasonably sharp. On mobile, the photo comes first at 4:5, text below.
+3. **Philosophy**: the only dark section, on `--night`. Centered text column. Italic headline "Someone was listening." Photo 4 (the horizon at first light) sits as a narrow band above the headline, cropped around the horizon line, with the plane window cropped out. This is where the signature motion happens (see Motion).
 4. **Signature Experiences**: ivory. Intro on the left, then three cards in a row (stacked on mobile) on `--linen`, each with a fine walnut top rule, name in Bodoni, details in Jost. TBC fields stay visible. The closing line and button sit centered beneath.
 5. **Her story**: two columns on desktop. Photo 9 (Merley at the carved lattice door) in a 3:4 frame that stays sticky while the text scrolls past it. On mobile the photo sits above the text and is not sticky.
 6. **Celebrate Sweetly link**: `--linen`. Photo 2 (the carved wooden doorway) small and to one side, a doorway to the other brand. Short text, one button.
@@ -132,11 +132,11 @@ Reveals trigger once, when the element is 15% into the viewport, and never repla
 
 ### The moments (only these)
 
-1. **Opening, once per visit.** The screen starts ivory. The logo monogram fades up 12px (600ms). The rule beneath it draws left to right (`scaleX` 0 to 1, 700ms). With an SVG logo, the swash draws on instead of fading. Then the hero headline rises line by line from behind a mask (SplitText lines, `yPercent` 100 to 0, stagger 90ms). The lantern photo unveils from the bottom (`clip-path: inset(100% 0 0 0)` to `inset(0)`) while settling from scale 1.08 to 1. Total under 2.2 seconds. Text is readable at all times, so never hide the page behind a loader. On repeat visits in the same session, skip straight to the end state.
-2. **Philosophy, the signature moment.** On the dark section, the body text starts at 22% opacity in ivory. As the reader scrolls, each word warms into full ivory, as if a lamp were moving down the page (ScrollTrigger scrub, word-level SplitText, from roughly 80% to 35% of the viewport). The headline "Someone was listening." itself lights from `--stone` to `--amber` first. This is the only scroll-scrubbed text effect on the site. It is the story of the frog being heard, made visible.
-3. **Section headings.** Every h2 uses the same masked line rise as the hero. Eyebrows fade in 120ms before their headline.
+1. **Opening, once per visit.** The screen starts ivory. The header monogram and name fade up 12px (600ms). The CSS hairline above the hero heading draws left to right (`scaleX` 0 to 1, 700ms). The rule inside the logo PNG is never animated separately. With an SVG logo later, the swash could draw on. Then the hero headline rises line by line from behind a mask (SplitText lines, `yPercent` 100 to 0, stagger 90ms). The lantern photo unveils from the bottom (`clip-path: inset(100% 0 0 0)` to `inset(0)`) while settling from scale 1.08 to 1. Total under 2.2 seconds. Text is readable at all times, so never hide the page behind a loader. On repeat visits in the same session, skip straight to the end state.
+2. **Philosophy, the signature moment.** On the dark section, the body text starts at 50% opacity in ivory (the lowest that still passes WCAG AA, about 4.8:1 on `--night`). As the reader scrolls, each word warms into full ivory, as if a lamp were moving down the page (ScrollTrigger scrub, word-level SplitText, from roughly 80% to 35% of the viewport). The headline "Someone was listening." lights from `--stone` to `--amber` first, by color scrub only. It is the one h2 that does not use the masked rise. This is the only scroll-scrubbed text effect on the site. It is the story of the frog being heard, made visible.
+3. **Section headings.** Every h2 except the Philosophy headline uses the same masked line rise as the hero. Eyebrows fade in 120ms before their headline.
 4. **Images.** Every photo reveals with the same bottom-up clip-path wipe and scale settle. The hero image drifts upward by 6% across the hero's scroll (very slow parallax). No other parallax.
-5. **Experience cards.** Rise 24px and fade in, staggered 90ms. On hover (pointer devices only), the walnut top rule extends to full width and the card shifts from linen to ivory over 220ms. No lift, no shadow.
+5. **Experience cards.** Rise 24px and fade in, staggered 90ms. On hover (pointer devices only), the walnut top rule extends to full width over 220ms. No background change, no lift, no shadow.
 6. **Her story.** The photo is sticky (CSS `position: sticky`) while the paragraphs pass. Paragraphs fade up one by one. No JS needed beyond the reveal.
 7. **Links and buttons.** Text links get an underline that draws from left to right on hover. Buttons shift background from ink to walnut over 220ms. Focus states are an ember outline, offset 3px, never animated away.
 8. **Header.** Slides up out of view on scroll down and back on scroll up (`--ease-inout`, 400ms). The active section's nav item gets a thin ember underline.

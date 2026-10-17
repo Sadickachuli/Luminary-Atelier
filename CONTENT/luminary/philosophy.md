@@ -1,6 +1,6 @@
 # Luminary Atelier: Philosophy section
 
-**Eyebrow:** Our Philosophy
+**Eyebrow:** Philosophy
 
 **Headline:** Someone was listening.
 
