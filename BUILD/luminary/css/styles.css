@@ -6,14 +6,13 @@
 .tbc {
   font: inherit;
   color: inherit;
-  outline: 1px dashed var(--ember);
-  outline-offset: 2px;
   background: rgba(162, 74, 38, 0.08);
+  border-bottom: 1px dotted var(--ember);
   padding: 0 0.2em;
 }
 .site-footer .tbc {
-  outline-color: var(--ivory);
-  background: rgba(245, 239, 230, 0.1);
+  background: rgba(245, 239, 230, 0.12);
+  border-bottom-color: var(--ivory);
 }
 /* ==================== end of TBC PLACEHOLDERS block ==================== */
 
@@ -29,6 +28,7 @@
   --linen: #EAE1D3;
   --ink: #16130F;
   --stone: #6E655B;
+  --stone-on-linen: #6B6258;        /* stone nudged darker so small text passes AA on linen (4.6:1) */
   --walnut: #5A3E2B;
   --walnut-40: rgba(90, 62, 43, 0.4);
   --ember: #A24A26;
@@ -42,8 +42,11 @@
   /* Type scale */
   --fs-h1: clamp(3rem, 7.2vw, 6.75rem);
   --fs-h2: clamp(2.25rem, 4.6vw, 4.25rem);
-  --fs-h3: clamp(1.5rem, 2.2vw, 2rem);
-  --fs-body: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  --fs-h3: clamp(1.375rem, 1.9vw, 1.75rem);
+  --fs-body: clamp(1.0625rem, 1.15vw, 1.1875rem);
+  --fs-philosophy-lead: clamp(1.5rem, 2.4vw, 2.125rem);
+  --fs-link: 0.8125rem;
+  --tracking-link: 0.18em;
   --fs-lead: clamp(1.25rem, 1.8vw, 1.5rem);
   --fs-label: 0.8125rem;
   --fs-small: 0.75rem;
@@ -58,7 +61,10 @@
   --s-5: 64px;
   --s-6: 104px;
   --s-7: 168px;
-  --section-pad: clamp(96px, 13vw, 200px);
+  --pad-tight: clamp(72px, 9vw, 128px);     /* Celebrate Sweetly, inquiry */
+  --pad-default: clamp(96px, 13vw, 200px);  /* Experiences, Her story */
+  --pad-open: clamp(136px, 18vw, 280px);    /* Philosophy only: the room goes quiet */
+  --hero-pad-top: calc(var(--header-h) + var(--s-3));
   --gutter: 24px;
   --page-pad: 24px;
   --content-max: 1240px;
@@ -89,7 +95,11 @@
     --header-h: 80px;
     --mark-h: 44px;
     --rise: 24px;
+    --hero-pad-top: calc(var(--header-h) + var(--s-5));
   }
+}
+@media (min-width: 1024px) {
+  :root { --hero-pad-top: calc(var(--header-h) + var(--s-4)); }
 }
 
 
@@ -112,7 +122,7 @@ body {
   background: var(--ivory);
   color: var(--ink);
   font-family: var(--font-text);
-  font-weight: 300;
+  font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
@@ -170,22 +180,13 @@ html.lenis, html.lenis body { height: auto; }
    Type
    ========================================================================== */
 .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
   font-weight: 500;
   font-size: var(--fs-small);
   line-height: 1.2;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: var(--walnut);
+  color: var(--stone);
   margin-bottom: var(--s-3);
-}
-.eyebrow::before {
-  content: "";
-  width: 40px;
-  height: 1px;
-  background: var(--walnut-40);
 }
 
 .section-title,
@@ -194,13 +195,14 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-display);
   font-weight: 400;
   font-optical-sizing: auto;
+  font-kerning: normal;
   color: var(--ink);
 }
 
 .hero__title {
   font-size: var(--fs-h1);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .section-title {
@@ -226,30 +228,50 @@ html.lenis, html.lenis body { height: auto; }
 /* ==========================================================================
    Links and buttons
    ========================================================================== */
+/* Inline text links (email, footer): quiet underline in the text's own color */
 .text-link {
-  position: relative;
-  color: var(--ember);
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 100% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color var(--dur-ui) var(--ease-out);
 }
-.text-link::after {
+.text-link:hover { text-decoration-color: currentColor; }
+
+/* Quiet call-to-action links: everything except the hero button and Send */
+.link-cta {
+  position: relative;
+  display: inline-block;
+  padding: 12px 0;               /* 44px tap target without drawing a box */
+  min-height: 44px;
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-weight: 500;
+  font-size: var(--fs-link);
+  line-height: 20px;
+  letter-spacing: var(--tracking-link);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.link-cta::before,
+.link-cta::after {
   content: "";
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: -1px;
+  right: var(--tracking-link);   /* stop under the last letter, not its tracking */
+  bottom: 5px;                   /* 6px below the text */
   height: 1px;
-  background: currentColor;
+}
+.link-cta::before { background: var(--walnut); }
+.link-cta::after {
+  background: var(--ember);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur-ui) var(--ease-out);
 }
-@media (hover: hover) {
-  .text-link:hover { background-size: 0 1px; }
-  .text-link:hover::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) {
+  .link-cta:hover::after { transform: scaleX(1); }
 }
 
 .button {
@@ -275,13 +297,6 @@ html.lenis, html.lenis body { height: auto; }
               color var(--dur-ui) var(--ease-out);
 }
 .button:hover { background: var(--walnut); border-color: var(--walnut); }
-
-.button--outline {
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--walnut);
-}
-.button--outline:hover { background: var(--walnut); color: var(--ivory); }
 
 
 /* ==========================================================================
@@ -435,15 +450,14 @@ html.lenis, html.lenis body { height: auto; }
   object-fit: cover;
 }
 .frame--4x5 { aspect-ratio: 4 / 5; }
-.frame--3x4 { aspect-ratio: 3 / 4; }
 
 
 /* ==========================================================================
    1. Opening (hero)
    ========================================================================== */
 .hero {
-  padding-top: calc(var(--header-h) + var(--s-3));
-  padding-bottom: var(--section-pad);
+  padding-top: var(--hero-pad-top);
+  padding-bottom: calc(var(--hero-pad-top) * 0.6);
 }
 .hero__grid {
   display: grid;
@@ -478,27 +492,14 @@ html.lenis, html.lenis body { height: auto; }
   line-height: 1.55;
   font-weight: 400;
   max-width: 30ch;
-  margin-bottom: var(--s-3);
 }
 .hero__intro {
   max-width: 46ch;
-  color: var(--stone);
+  margin-top: var(--s-3);
   margin-bottom: var(--s-5);
 }
 
-@media (min-width: 768px) {
-  .hero { padding-top: calc(var(--header-h) + var(--s-5)); }
-}
-
 @media (min-width: 1024px) {
-  .hero {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    padding-top: calc(var(--header-h) + var(--s-4));
-    padding-bottom: var(--s-6);
-  }
   .hero__grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gutter);
@@ -515,22 +516,22 @@ html.lenis, html.lenis body { height: auto; }
 .philosophy {
   background: var(--night);
   color: var(--ivory);
-  padding-block: var(--section-pad);
 }
+/* the horizon: full-bleed light at the very top of the dark room */
+.philosophy__band {
+  width: 100%;
+  height: clamp(120px, 18vh, 220px);
+  background: var(--night);
+}
+.philosophy__band img { object-position: 50% 50%; }
 .philosophy__inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding-block: var(--pad-open);
 }
-.philosophy__band {
-  width: min(100%, 720px);
-  aspect-ratio: 5 / 2;
-  margin-bottom: var(--s-6);
-  background: var(--night);
-}
-.philosophy .eyebrow { color: var(--ivory); opacity: 0.8; justify-content: center; }
-.philosophy .eyebrow::before { background: rgba(245, 239, 230, 0.4); }
+.philosophy .eyebrow { color: var(--ivory); opacity: 0.8; }
 .philosophy__title {
   font-style: italic;
   font-size: var(--fs-h2);
@@ -539,21 +540,27 @@ html.lenis, html.lenis body { height: auto; }
   margin-bottom: var(--s-5);
 }
 .philosophy__body {
-  max-width: var(--text-max);
-  font-size: var(--fs-lead);
-  line-height: 1.6;
+  max-width: 34em;
   text-align: left;
 }
 .philosophy__body p + p { margin-top: 1.1em; }
-@media (min-width: 768px) {
-  .philosophy__body { text-align: center; }
+.philosophy__lead {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  font-size: var(--fs-philosophy-lead);
+  line-height: 1.35;
+  color: var(--ivory);
 }
+.philosophy__body .philosophy__lead + p { margin-top: var(--s-4); }
 
 
 /* ==========================================================================
    3. Signature Experiences
    ========================================================================== */
-.experiences { padding-block: var(--section-pad); }
+.experiences { padding-block: var(--pad-default); }
 
 .section-intro { max-width: var(--text-max); margin-bottom: var(--s-5); }
 .section-intro .section-title { margin-bottom: var(--s-3); }
@@ -571,7 +578,7 @@ html.lenis, html.lenis body { height: auto; }
   background: var(--linen);
   border-radius: var(--radius);
 }
-/* the walnut top rule: short at rest, full width on hover */
+/* the top rule: full width at rest, turns ember on hover (color only) */
 .card::before {
   content: "";
   position: absolute;
@@ -579,17 +586,17 @@ html.lenis, html.lenis body { height: auto; }
   left: 0;
   width: 100%;
   height: 1px;
-  background: var(--walnut);
-  transform: scaleX(0.25);
-  transform-origin: left;
-  transition: transform var(--dur-ui) var(--ease-out);
+  background: var(--walnut-40);
+  transition: background-color var(--dur-ui) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .card:hover::before { transform: scaleX(1); }
+  .card:hover::before { background: var(--ember); }
 }
 .card__name {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-kerning: normal;
   font-size: var(--fs-h3);
   line-height: 1.15;
 }
@@ -598,19 +605,18 @@ html.lenis, html.lenis body { height: auto; }
   gap: var(--s-1);
   padding-top: var(--s-2);
   border-top: 1px solid var(--walnut-40);
-  color: var(--stone);
   font-size: 1rem;
   line-height: 1.5;
   margin-bottom: var(--s-2);
 }
-.card__link { margin-top: auto; align-self: flex-start; padding-inline: var(--s-3); min-height: 48px; }
+.card__link { margin-top: auto; align-self: flex-start; }
 
 .experiences__closing {
   margin-top: var(--s-6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--s-4);
+  gap: var(--s-3);
   text-align: center;
 }
 .experiences__closing .lead { max-width: 34ch; }
@@ -624,7 +630,7 @@ html.lenis, html.lenis body { height: auto; }
 /* ==========================================================================
    4. Her story
    ========================================================================== */
-.story { padding-block: var(--section-pad); }
+.story { padding-block: var(--pad-default); }
 .story__grid {
   display: grid;
   gap: var(--s-5);
@@ -652,34 +658,39 @@ html.lenis, html.lenis body { height: auto; }
    ========================================================================== */
 .celebrate {
   background: var(--linen);
-  padding-block: var(--section-pad);
+  padding-block: var(--pad-tight);
 }
+.celebrate .eyebrow { color: var(--stone-on-linen); }
 .celebrate__grid {
   display: grid;
   gap: var(--s-5);
 }
-.celebrate__media { width: min(70%, 320px); }
-.celebrate__text .button { margin-top: var(--s-4); }
+.celebrate__media { width: min(100%, 480px); }
+.celebrate__text .link-cta { margin-top: var(--s-3); }
 
 @media (min-width: 768px) {
   .celebrate__grid {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     column-gap: var(--s-5);
-    align-items: center;
+    align-items: start;
   }
-  .celebrate__media { width: 100%; max-width: 360px; }
+  .celebrate__media {
+    width: 100%;
+    /* line the top of the photo up with the top of the h2, not the eyebrow */
+    margin-top: calc(var(--fs-small) * 1.2 + var(--s-3));
+  }
 }
 @media (min-width: 1024px) {
   .celebrate__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .celebrate__media { grid-column: 2 / span 3; }
-  .celebrate__text { grid-column: 6 / span 6; }
+  .celebrate__media { grid-column: 1 / span 5; }
+  .celebrate__text { grid-column: 8 / span 5; }  /* one column further right than the Her story text */
 }
 
 
 /* ==========================================================================
    6. Inquiry
    ========================================================================== */
-.inquire { padding-block: var(--section-pad); }
+.inquire { padding-block: var(--pad-tight); }
 .inquire__inner { max-width: calc(var(--text-max) + 2 * var(--page-pad)); }
 
 .form {
@@ -714,7 +725,7 @@ html.lenis, html.lenis body { height: auto; }
   background: transparent;
   color: var(--ink);
   font-family: var(--font-text);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.0625rem; /* 17px keeps iOS from zooming on focus */
   line-height: 1.5;
   transition: border-color var(--dur-ui) var(--ease-out);
