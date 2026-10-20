@@ -35,13 +35,20 @@
     if (mq.matches) setMenu(false);
   });
 
-  /* ---------- Header: solid once scrolled, hides on scroll down, returns on scroll up ---------- */
+  /* ---------- Header: solid once scrolled, hides on scroll down, returns on scroll up,
+                swaps to ivory-on-night over the dark stage ---------- */
+  var darkStage = document.querySelector('[data-dark]');
   if (header) {
     var lastY = window.scrollY;
     var ticking = false;
     function updateHeader() {
       var y = window.scrollY;
       header.classList.toggle('is-scrolled', y > 8);
+      if (darkStage) {
+        var r = darkStage.getBoundingClientRect();
+        var mid = header.offsetHeight / 2;
+        header.classList.toggle('is-dark', r.top <= mid && r.bottom >= mid);
+      }
       var goingDown = y > lastY;
       var pastHero = y > header.offsetHeight * 2;
       var keepVisible = header.classList.contains('is-open') || header.contains(document.activeElement);
@@ -71,6 +78,29 @@
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     document.querySelectorAll('main section[id]').forEach(function (s) { observer.observe(s); });
+  }
+
+  /* ---------- Filmstrip counter in swipe mode (touch screens). Pinned mode is handled in motion.js. ---------- */
+  var filmTrack = document.querySelector('[data-film-track]');
+  var filmCurrent = document.querySelector('[data-film-current]');
+  if (filmTrack && filmCurrent) {
+    var filmTick = false;
+    filmTrack.addEventListener('scroll', function () {
+      if (filmTick || document.documentElement.classList.contains('film-pinned')) return;
+      filmTick = true;
+      window.requestAnimationFrame(function () {
+        var centre = filmTrack.getBoundingClientRect().left + filmTrack.clientWidth / 2;
+        var best = 0;
+        var bestDist = Infinity;
+        Array.prototype.forEach.call(filmTrack.children, function (frame, i) {
+          var b = frame.getBoundingClientRect();
+          var d = Math.abs(b.left + b.width / 2 - centre);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        filmCurrent.textContent = String(best + 1).padStart(2, '0');
+        filmTick = false;
+      });
+    }, { passive: true });
   }
 
   /* ---------- "Ask about this gathering" preselects the form ---------- */

@@ -13,10 +13,10 @@
   <meta property="og:url" content="https://theluminaryatelier.com/">
   <meta property="og:title" content="Luminary Atelier | The Art of Gathering with Gratitude">
   <meta property="og:description" content="Small gatherings, phones put away, and a real conversation about gratitude, hosted by Merley Greenidge.">
-  <meta property="og:image" content="https://theluminaryatelier.com/assets/photos/hero-lantern.jpg">
-  <meta property="og:image:width" content="768">
-  <meta property="og:image:height" content="960">
-  <meta property="og:image:alt" content="A pierced brass globe lamp, lit from inside, in front of palm trees and an orange sunset sky.">
+  <meta property="og:image" content="https://theluminaryatelier.com/assets/photos/film-door.jpg">
+  <meta property="og:image:width" content="750">
+  <meta property="og:image:height" content="1000">
+  <meta property="og:image:alt" content="Merley sits on the step of a large carved wooden doorway, wearing a white shirt and orange trousers.">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="assets/logo/favicon.ico" sizes="any">
@@ -41,10 +41,10 @@
     })();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..500;1,6..96,400&family=Jost:wght@300;400;500&display=swap">
-  <link rel="preload" as="image" href="assets/photos/hero-lantern.webp" type="image/webp">
+  <!-- Fonts are self-hosted (SIL Open Font License, see fonts/). The display font is preloaded for the headline. -->
+  <link rel="preload" href="fonts/bodoni-moda-normal-400-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/bodoni-moda-italic-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost-normal-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
 
   <script src="js/vendor/gsap.min.js" defer></script>
@@ -57,10 +57,20 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- Intro curtain: only shown on a first visit with motion on (see .intro in styles.css) -->
+  <div class="curtain" aria-hidden="true" data-curtain>
+    <div class="curtain__half curtain__half--top"></div>
+    <div class="curtain__half curtain__half--bottom"></div>
+    <span class="curtain__line"></span>
+  </div>
+
   <header class="site-header" data-header>
     <div class="site-header__inner">
       <a class="brand" href="#top" data-intro="brand">
-        <img class="brand__mark" src="assets/logo/monogram.png" width="226" height="249" alt="">
+        <span class="brand__marks" data-intro="mark">
+          <img class="brand__mark brand__mark--ink" src="assets/logo/monogram.png" width="226" height="249" alt="">
+          <img class="brand__mark brand__mark--ivory" src="assets/logo/monogram-ivory.png" width="226" height="249" alt="">
+        </span>
         <span class="brand__name">Luminary Atelier</span>
       </a>
 
@@ -82,20 +92,36 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- 1. Opening -->
-    <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="container hero__grid">
-        <figure class="hero__media frame frame--4x5" data-intro="image">
-          <picture>
-            <source srcset="assets/photos/hero-lantern.webp" type="image/webp">
-            <img src="assets/photos/hero-lantern.jpg" width="408" height="510" fetchpriority="high" data-parallax
-                 alt="A pierced brass globe lamp, lit from inside, in front of a low building, palm trees and an orange sunset sky.">
-          </picture>
-        </figure>
+    <!--
+      PHOTOS: every image on the page comes from assets/photos/ and is produced by tools/photos.py,
+      which holds the one list of sources and crops. To swap in Merley's originals, update that script
+      and rerun it. File names stay the same, so nothing here needs to change.
+    -->
 
-        <div class="hero__text">
-          <span class="hairline" aria-hidden="true" data-intro="rule"></span>
-          <h1 class="hero__title" id="hero-title" data-intro="title">The Art of Gathering with Gratitude</h1>
+    <!-- 1. Opening: giant tagline with five photo cards floating in 3D around it -->
+    <section class="hero" id="top" aria-labelledby="hero-title" data-hero>
+      <div class="hero__stage" aria-hidden="true" data-hero-stage>
+        <div class="hcard hcard--1" style="--ry: -16deg; --rz: 4deg; --z: 60px; --depth: 1"><div class="hcard__exit"><div class="hcard__tilt"><div class="hcard__drift">
+          <picture><source srcset="assets/photos/card-lantern.webp" type="image/webp"><img src="assets/photos/card-lantern.jpg" width="360" height="450" alt="" fetchpriority="low" decoding="async"></picture>
+        </div></div></div></div>
+        <div class="hcard hcard--2" style="--ry: 14deg; --rz: -5deg; --z: -120px; --depth: 0.6"><div class="hcard__exit"><div class="hcard__tilt"><div class="hcard__drift">
+          <picture><source srcset="assets/photos/card-door.webp" type="image/webp"><img src="assets/photos/card-door.jpg" width="360" height="450" alt="" fetchpriority="low" decoding="async"></picture>
+        </div></div></div></div>
+        <div class="hcard hcard--3" style="--ry: -10deg; --rz: -3deg; --z: -220px; --depth: 0.4"><div class="hcard__exit"><div class="hcard__tilt"><div class="hcard__drift">
+          <picture><source srcset="assets/photos/card-garden.webp" type="image/webp"><img src="assets/photos/card-garden.jpg" width="360" height="450" alt="" fetchpriority="low" decoding="async"></picture>
+        </div></div></div></div>
+        <div class="hcard hcard--4" style="--ry: 18deg; --rz: 6deg; --z: 20px; --depth: 0.9"><div class="hcard__exit"><div class="hcard__tilt"><div class="hcard__drift">
+          <picture><source srcset="assets/photos/card-lattice.webp" type="image/webp"><img src="assets/photos/card-lattice.jpg" width="360" height="450" alt="" fetchpriority="low" decoding="async"></picture>
+        </div></div></div></div>
+        <div class="hcard hcard--5" style="--ry: -18deg; --rz: -4deg; --z: -60px; --depth: 0.7"><div class="hcard__exit"><div class="hcard__tilt"><div class="hcard__drift">
+          <picture><source srcset="assets/photos/card-desert.webp" type="image/webp"><img src="assets/photos/card-desert.jpg" width="360" height="450" alt="" fetchpriority="low" decoding="async"></picture>
+        </div></div></div></div>
+      </div>
+
+      <div class="container hero__inner">
+        <h1 class="hero__title" id="hero-title"><span class="hero__line">The Art of</span> <em class="hero__line">Gathering</em> <span class="hero__line">with Gratitude</span></h1>
+
+        <div class="hero__foot">
           <p class="hero__subline">Small gatherings, phones put away, and a real conversation about gratitude.</p>
           <p class="hero__intro">I'm Merley. For years I have helped people say thank you with a gift. Luminary Atelier is where we say it to each other, face to face.</p>
           <a class="button" href="#inquire">Start a conversation</a>
@@ -103,75 +129,122 @@
       </div>
     </section>
 
-    <!-- 2. Philosophy: the one dark section, home of the word-lighting scroll effect -->
-    <section class="philosophy" id="philosophy" aria-labelledby="philosophy-title">
-      <figure class="philosophy__band frame" data-reveal-image>
-        <picture>
-          <source srcset="assets/photos/philosophy-horizon.webp" type="image/webp">
-          <img src="assets/photos/philosophy-horizon.jpg" width="900" height="360" loading="lazy" decoding="async"
-               alt="The horizon at first light seen from high above, a thin band of orange under a deep blue sky.">
-        </picture>
-      </figure>
+    <!-- The dark stage: the filmstrip and Philosophy share one continuous night background -->
+    <div class="dark-stage" data-dark>
 
-      <div class="container philosophy__inner" data-philosophy>
-        <p class="eyebrow" data-eyebrow>Philosophy</p>
-        <h2 class="philosophy__title" id="philosophy-title" data-philosophy-title>Someone was listening.</h2>
-
-        <div class="philosophy__body" data-philosophy-body>
-          <p class="philosophy__lead">She mentioned it once, almost in passing. She loved tiny frogs.</p>
-          <p>So when she moved into her new home, tucked in with her gift was a tiny ceramic frog. When her thank-you note came, the frog was what she wrote about. Not because it was precious, but because it told her someone had heard her.</p>
-          <p>That is what Luminary Atelier is for. Celebrate Sweetly gives the listening something to hold. Luminary gives it a room.</p>
-          <p>We gather fifteen to twenty people, phones put away, and give the time to a conversation about gratitude, guided so that every person in the room is heard.</p>
-          <p>So much of how we say thank you has become automatic. Here, the listening is the whole point, and it is never rushed.</p>
-          <p>This is for people who say thank you because they want to, not because the calendar says they should. If that sounds like you, I would love to hear what you have in mind.</p>
+      <!-- 2. Filmstrip: pinned and scrubbed on pointer devices, a swipe row on touch, a grid with reduced motion -->
+      <section class="film" aria-label="Luminary Atelier" data-film>
+        <div class="film__pin" data-film-pin>
+          <ol class="film__track" role="list" data-film-track>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-door.webp" type="image/webp"><img src="assets/photos/film-door.jpg" width="750" height="1000" loading="lazy" decoding="async"
+              alt="Merley sits on the step of a large carved wooden doorway, wearing a white shirt and orange trousers, above a floor of patterned tiles."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-garden.webp" type="image/webp"><img src="assets/photos/film-garden.jpg" width="750" height="1000" loading="lazy" decoding="async"
+              alt="Merley walks along a garden path between olive trees, in a denim top and red patterned trousers."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-mural.webp" type="image/webp"><img src="assets/photos/film-mural.jpg" width="750" height="1000" loading="lazy" decoding="async"
+              alt="Merley stands in front of a large painted mural of soft orange and green circles, in a denim top and red patterned trousers."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-lantern.webp" type="image/webp"><img src="assets/photos/film-lantern.jpg" width="408" height="544" loading="lazy" decoding="async"
+              alt="A pierced brass globe lamp, lit from inside, against an orange sunset sky and palm trees."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-lattice.webp" type="image/webp"><img src="assets/photos/film-lattice.jpg" width="750" height="1000" loading="lazy" decoding="async"
+              alt="Merley stands beside a tall wooden door carved in a pattern of raised squares, in a rust shirt and red sunglasses, looking upward."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-desert.webp" type="image/webp"><img src="assets/photos/film-desert.jpg" width="600" height="800" loading="lazy" decoding="async"
+              alt="Merley at night in the desert in a long orange robe, one hand on the saddle of a white camel lying on the sand."></picture></li>
+            <li class="film__frame"><picture><source srcset="assets/photos/film-horizon.webp" type="image/webp"><img src="assets/photos/film-horizon.jpg" width="750" height="1001" loading="lazy" decoding="async"
+              alt="The horizon at first light seen from high above, a thin line of orange under a deep blue sky."></picture></li>
+          </ol>
+          <p class="film__title" aria-hidden="true">Luminary Atelier</p>
+          <p class="film__counter" aria-hidden="true"><span data-film-current>01</span> / 07</p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 3. Signature Experiences -->
-    <section class="experiences" id="gatherings" aria-labelledby="gatherings-title">
+      <!-- 3. Philosophy: continues on the same dark stage, home of the word-lighting scroll effect -->
+      <section class="philosophy" id="philosophy" aria-labelledby="philosophy-title">
+        <figure class="philosophy__band">
+          <picture>
+            <source srcset="assets/photos/philosophy-horizon.webp" type="image/webp">
+            <img src="assets/photos/philosophy-horizon.jpg" width="900" height="360" loading="lazy" decoding="async"
+                 alt="The horizon at first light seen from high above, a thin band of orange under a deep blue sky.">
+          </picture>
+        </figure>
+
+        <div class="container philosophy__inner" data-philosophy>
+          <p class="eyebrow" data-eyebrow><span class="idx" aria-hidden="true">[ 01 ]</span> Philosophy</p>
+          <h2 class="philosophy__title" id="philosophy-title" data-philosophy-title>Someone was listening.</h2>
+
+          <div class="philosophy__body" data-philosophy-body>
+            <p class="philosophy__lead">She mentioned it once, almost in passing. She loved tiny frogs.</p>
+            <p>So when she moved into her new home, tucked in with her gift was a tiny ceramic frog. When her thank-you note came, the frog was what she wrote about. Not because it was precious, but because it told her someone had heard her.</p>
+            <p>That is what Luminary Atelier is for. Celebrate Sweetly gives the listening something to hold. Luminary gives it a room.</p>
+            <p>We gather fifteen to twenty people, phones put away, and give the time to a conversation about gratitude, guided so that every person in the room is heard.</p>
+            <p>So much of how we say thank you has become automatic. Here, the listening is the whole point, and it is never rushed.</p>
+            <p>This is for people who say thank you because they want to, not because the calendar says they should. If that sounds like you, I would love to hear what you have in mind.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 4. Signature Experiences: editorial rows over faint column lines -->
+    <section class="experiences has-grid-lines" id="gatherings" aria-labelledby="gatherings-title">
+      <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div class="container">
         <div class="section-intro">
-          <p class="eyebrow" data-eyebrow>Signature Experiences</p>
+          <p class="eyebrow" data-eyebrow><span class="idx" aria-hidden="true">[ 02 ]</span> Signature Experiences</p>
           <h2 class="section-title" id="gatherings-title" data-heading>Gatherings</h2>
           <p class="body-text">Every gathering begins the same way. Fifteen to twenty people, phones put away, and a conversation about gratitude that I guide from beginning to end. What changes is who is in the room and why they have come together.</p>
         </div>
 
-        <ul class="cards" role="list">
-          <li class="card" data-card>
-            <h3 class="card__name" id="exp1-title"><span class="tbc" data-tbc="exp1-name">[TBC: Experience 1 name]</span></h3>
-            <p class="card__summary"><span class="tbc" data-tbc="exp1-summary">[TBC: Experience 1 in a sentence]</span></p>
-            <ul class="card__details" role="list">
-              <li><span class="tbc" data-tbc="exp1-audience">[TBC: Experience 1 who it is for]</span></li>
-              <li><span class="tbc" data-tbc="exp1-details">[TBC: Experience 1 length and setting]</span></li>
-              <li><span class="tbc" data-tbc="exp1-price">[TBC: Experience 1 price]</span></li>
-              <li><span class="tbc" data-tbc="exp1-date">[TBC: Experience 1 next date]</span></li>
-            </ul>
-            <a class="link-cta card__link" href="#inquire" data-gathering="1" aria-describedby="exp1-title">Ask about this gathering</a>
+        <ol class="rows" role="list">
+          <li class="row" data-row>
+            <span class="row__rule" aria-hidden="true"></span>
+            <span class="row__num" aria-hidden="true">01</span>
+            <div class="row__main">
+              <h3 class="row__name" id="exp1-title"><span class="tbc" data-tbc="exp1-name">[TBC: Experience 1 name]</span></h3>
+              <p class="row__summary"><span class="tbc" data-tbc="exp1-summary">[TBC: Experience 1 in a sentence]</span></p>
+            </div>
+            <div class="row__aside">
+              <ul class="row__details" role="list">
+                <li><span class="tbc" data-tbc="exp1-audience">[TBC: Experience 1 who it is for]</span></li>
+                <li><span class="tbc" data-tbc="exp1-details">[TBC: Experience 1 length and setting]</span></li>
+                <li><span class="tbc" data-tbc="exp1-price">[TBC: Experience 1 price]</span></li>
+                <li><span class="tbc" data-tbc="exp1-date">[TBC: Experience 1 next date]</span></li>
+              </ul>
+              <a class="link-cta" href="#inquire" data-gathering="1" aria-describedby="exp1-title">Ask about this gathering</a>
+            </div>
           </li>
-          <li class="card" data-card>
-            <h3 class="card__name" id="exp2-title"><span class="tbc" data-tbc="exp2-name">[TBC: Experience 2 name]</span></h3>
-            <p class="card__summary"><span class="tbc" data-tbc="exp2-summary">[TBC: Experience 2 in a sentence]</span></p>
-            <ul class="card__details" role="list">
-              <li><span class="tbc" data-tbc="exp2-audience">[TBC: Experience 2 who it is for]</span></li>
-              <li><span class="tbc" data-tbc="exp2-details">[TBC: Experience 2 length and setting]</span></li>
-              <li><span class="tbc" data-tbc="exp2-price">[TBC: Experience 2 price]</span></li>
-              <li><span class="tbc" data-tbc="exp2-date">[TBC: Experience 2 next date]</span></li>
-            </ul>
-            <a class="link-cta card__link" href="#inquire" data-gathering="2" aria-describedby="exp2-title">Ask about this gathering</a>
+          <li class="row" data-row>
+            <span class="row__rule" aria-hidden="true"></span>
+            <span class="row__num" aria-hidden="true">02</span>
+            <div class="row__main">
+              <h3 class="row__name" id="exp2-title"><span class="tbc" data-tbc="exp2-name">[TBC: Experience 2 name]</span></h3>
+              <p class="row__summary"><span class="tbc" data-tbc="exp2-summary">[TBC: Experience 2 in a sentence]</span></p>
+            </div>
+            <div class="row__aside">
+              <ul class="row__details" role="list">
+                <li><span class="tbc" data-tbc="exp2-audience">[TBC: Experience 2 who it is for]</span></li>
+                <li><span class="tbc" data-tbc="exp2-details">[TBC: Experience 2 length and setting]</span></li>
+                <li><span class="tbc" data-tbc="exp2-price">[TBC: Experience 2 price]</span></li>
+                <li><span class="tbc" data-tbc="exp2-date">[TBC: Experience 2 next date]</span></li>
+              </ul>
+              <a class="link-cta" href="#inquire" data-gathering="2" aria-describedby="exp2-title">Ask about this gathering</a>
+            </div>
           </li>
-          <li class="card" data-card>
-            <h3 class="card__name" id="exp3-title"><span class="tbc" data-tbc="exp3-name">[TBC: Experience 3 name]</span></h3>
-            <p class="card__summary"><span class="tbc" data-tbc="exp3-summary">[TBC: Experience 3 in a sentence]</span></p>
-            <ul class="card__details" role="list">
-              <li><span class="tbc" data-tbc="exp3-audience">[TBC: Experience 3 who it is for]</span></li>
-              <li><span class="tbc" data-tbc="exp3-details">[TBC: Experience 3 length and setting]</span></li>
-              <li><span class="tbc" data-tbc="exp3-price">[TBC: Experience 3 price]</span></li>
-              <li><span class="tbc" data-tbc="exp3-date">[TBC: Experience 3 next date]</span></li>
-            </ul>
-            <a class="link-cta card__link" href="#inquire" data-gathering="3" aria-describedby="exp3-title">Ask about this gathering</a>
+          <li class="row" data-row>
+            <span class="row__rule" aria-hidden="true"></span>
+            <span class="row__num" aria-hidden="true">03</span>
+            <div class="row__main">
+              <h3 class="row__name" id="exp3-title"><span class="tbc" data-tbc="exp3-name">[TBC: Experience 3 name]</span></h3>
+              <p class="row__summary"><span class="tbc" data-tbc="exp3-summary">[TBC: Experience 3 in a sentence]</span></p>
+            </div>
+            <div class="row__aside">
+              <ul class="row__details" role="list">
+                <li><span class="tbc" data-tbc="exp3-audience">[TBC: Experience 3 who it is for]</span></li>
+                <li><span class="tbc" data-tbc="exp3-details">[TBC: Experience 3 length and setting]</span></li>
+                <li><span class="tbc" data-tbc="exp3-price">[TBC: Experience 3 price]</span></li>
+                <li><span class="tbc" data-tbc="exp3-date">[TBC: Experience 3 next date]</span></li>
+              </ul>
+              <a class="link-cta" href="#inquire" data-gathering="3" aria-describedby="exp3-title">Ask about this gathering</a>
+            </div>
           </li>
-        </ul>
+        </ol>
 
         <div class="experiences__closing">
           <p class="lead">If none of these is quite right, I would love to hear about the one you are imagining.</p>
@@ -180,46 +253,52 @@
       </div>
     </section>
 
-    <!-- 4. Her story -->
+    <!-- 5. Her story: full-height sticky photo on the left, text scrolling on the right -->
     <section class="story" id="about" aria-labelledby="about-title">
-      <div class="container story__grid">
-        <div class="story__media">
-          <figure class="frame frame--4x5" data-reveal-image>
-            <picture>
-              <source srcset="assets/photos/story-merley-door.webp" type="image/webp">
-              <img src="assets/photos/story-merley-door.jpg" width="720" height="900" loading="lazy" decoding="async"
-                   alt="Merley stands in a doorway beside a tall wooden door carved in a pattern of raised squares. She wears a rust shirt, a long white skirt and red sunglasses, and looks upward.">
-            </picture>
-          </figure>
-        </div>
+      <div class="story__media">
+        <figure class="story__frame">
+          <picture>
+            <source srcset="assets/photos/story-merley-door.webp" type="image/webp">
+            <img src="assets/photos/story-merley-door.jpg" width="900" height="1350" loading="lazy" decoding="async"
+                 alt="Merley stands in a doorway beside a tall wooden door carved in a pattern of raised squares. She wears a rust shirt, a long white skirt and red sunglasses, and looks upward.">
+          </picture>
+          <figcaption class="chip">Merley Greenidge &middot; Los Angeles</figcaption>
+        </figure>
+      </div>
 
-        <div class="story__text">
-          <p class="eyebrow" data-eyebrow>About Merley</p>
-          <h2 class="section-title" id="about-title" data-heading>Why I listen first</h2>
-          <p class="body-text" data-reveal>I have spent about fourteen years helping people say thank you through Celebrate Sweetly, from my home in Los Angeles.</p>
-          <p class="body-text" data-reveal>In that time I have heard more than one story of a gift chosen without listening. Steaks sent to someone who is vegetarian. Alcohol sent to someone in recovery. No one meant any harm. They simply had not done the homework.</p>
-          <p class="body-text" data-reveal>The homework is the part I love. Knowing not just that someone reads, but what they read. That is where a personal touch comes from, even in a gift for fifty people.</p>
-          <p class="body-text" data-reveal>Over the years I came to see that the gift was only ever half of it. The other half is being in a room together, giving each person your full attention, and letting them feel it.</p>
-          <p class="body-text" data-reveal>That is why I named this Luminary Atelier. A luminary gives off light and helps others find their way. An atelier is a workshop, a small studio where things are made with care. I want this to be both: a place to learn the art of gratitude, and a place to practice it together.</p>
-          <p class="body-text" data-reveal>If you would like to learn it with me, I would be honored to guide you.</p>
-        </div>
+      <div class="story__text">
+        <p class="eyebrow" data-eyebrow><span class="idx" aria-hidden="true">[ 03 ]</span> About Merley</p>
+        <h2 class="section-title" id="about-title" data-heading>Why I listen first</h2>
+        <p class="body-text">I have spent about fourteen years helping people say thank you through Celebrate Sweetly, from my home in Los Angeles.</p>
+        <p class="body-text">In that time I have heard more than one story of a gift chosen without listening. Steaks sent to someone who is vegetarian. Alcohol sent to someone in recovery. No one meant any harm. They simply had not done the homework.</p>
+        <p class="body-text">The homework is the part I love. Knowing not just that someone reads, but what they read. That is where a personal touch comes from, even in a gift for fifty people.</p>
+        <p class="body-text">Over the years I came to see that the gift was only ever half of it. The other half is being in a room together, giving each person your full attention, and letting them feel it.</p>
+        <p class="body-text">That is why I named this Luminary Atelier. A luminary gives off light and helps others find their way. An atelier is a workshop, a small studio where things are made with care. I want this to be both: a place to learn the art of gratitude, and a place to practice it together.</p>
+        <p class="body-text">If you would like to learn it with me, I would be honored to guide you.</p>
       </div>
     </section>
 
-    <!-- 5. Celebrate Sweetly link -->
+    <!-- 6. Celebrate Sweetly: a slow marquee band, then the copy and link -->
     <section class="celebrate" id="celebrate-sweetly" aria-labelledby="celebrate-title">
-      <div class="container celebrate__grid">
-        <figure class="celebrate__media frame frame--4x5" data-reveal-image>
-          <picture>
-            <source srcset="assets/photos/celebrate-doorway.webp" type="image/webp">
-            <img src="assets/photos/celebrate-doorway.jpg" width="960" height="1200" loading="lazy" decoding="async"
-                 alt="Merley sits on the step of a large carved wooden doorway, wearing a white shirt and orange trousers, with patterned tiles on the floor and wall.">
-          </picture>
-        </figure>
+      <div class="marquee" aria-hidden="true" data-marquee>
+        <div class="marquee__track" data-marquee-track>
+          <div class="marquee__set">
+            <span class="marquee__word">Celebrate Sweetly</span>
+            <img class="marquee__thumb" src="assets/photos/detail-carving.jpg" width="240" height="300" alt="" loading="lazy">
+            <span class="marquee__word">Celebrate Sweetly</span>
+            <img class="marquee__thumb" src="assets/photos/detail-lantern.jpg" width="148" height="185" alt="" loading="lazy">
+            <span class="marquee__word">Celebrate Sweetly</span>
+            <img class="marquee__thumb" src="assets/photos/detail-embroidery.jpg" width="104" height="130" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
 
-        <div class="celebrate__text">
-          <p class="eyebrow" data-eyebrow>Celebrate Sweetly</p>
+      <div class="container celebrate__grid">
+        <div class="celebrate__head">
+          <p class="eyebrow" data-eyebrow><span class="idx" aria-hidden="true">[ 04 ]</span> Celebrate Sweetly</p>
           <h2 class="section-title" id="celebrate-title" data-heading>When you want to say it with a gift</h2>
+        </div>
+        <div class="celebrate__text">
           <p class="body-text">Some thank-yous belong in a room. Others belong in a box, tied with a satin ribbon, with one small detail inside that tells the person you were listening.</p>
           <p class="body-text">Celebrate Sweetly is where I do that, for companies and for the people they want to thank.</p>
           <a class="link-cta" href="https://www.celebratesweetly.com">Visit Celebrate Sweetly</a>
@@ -227,70 +306,75 @@
       </div>
     </section>
 
-    <!-- 6. Inquiry -->
-    <section class="inquire" id="inquire" aria-labelledby="inquire-title">
-      <div class="container inquire__inner">
-        <p class="eyebrow" data-eyebrow>Get in touch</p>
-        <h2 class="section-title" id="inquire-title" data-heading>Tell me what you have in mind</h2>
+    <!-- 7. Inquiry -->
+    <section class="inquire has-grid-lines" id="inquire" aria-labelledby="inquire-title">
+      <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="container inquire__grid">
+        <div class="inquire__head">
+          <p class="eyebrow" data-eyebrow><span class="idx" aria-hidden="true">[ 05 ]</span> Get in touch</p>
+          <h2 class="section-title" id="inquire-title" data-heading>Tell me what you have in mind</h2>
+        </div>
 
-        <!-- FORM ENDPOINT: replace [TBC-FORM-ID] with the Formspree form ID (see TBC-LIST.md, form-endpoint) -->
-        <form class="form" action="https://formspree.io/f/[TBC-FORM-ID]" method="POST" data-form>
-          <input type="hidden" name="_subject" value="New Luminary Atelier inquiry">
-          <div class="form__honeypot" aria-hidden="true">
-            <label for="f-gotcha">Leave this empty</label>
-            <input type="text" id="f-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
-          </div>
+        <div class="inquire__body">
+          <!-- FORM ENDPOINT: replace [TBC-FORM-ID] with the Formspree form ID (see TBC-LIST.md, form-endpoint) -->
+          <form class="form" action="https://formspree.io/f/[TBC-FORM-ID]" method="POST" data-form>
+            <input type="hidden" name="_subject" value="New Luminary Atelier inquiry">
+            <div class="form__honeypot" aria-hidden="true">
+              <label for="f-gotcha">Leave this empty</label>
+              <input type="text" id="f-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="f-name">Name</label>
-            <input class="field__input" type="text" id="f-name" name="name" autocomplete="name" required>
-          </div>
+            <div class="field">
+              <label class="field__label" for="f-name">Name</label>
+              <input class="field__input" type="text" id="f-name" name="name" autocomplete="name" required>
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="f-email">Email</label>
-            <input class="field__input" type="email" id="f-email" name="email" autocomplete="email" required>
-          </div>
+            <div class="field">
+              <label class="field__label" for="f-email">Email</label>
+              <input class="field__input" type="email" id="f-email" name="email" autocomplete="email" required>
+            </div>
 
-          <div class="field field--half">
-            <label class="field__label" for="f-phone">Phone (optional)</label>
-            <input class="field__input" type="tel" id="f-phone" name="phone" autocomplete="tel">
-          </div>
+            <div class="field field--half">
+              <label class="field__label" for="f-phone">Phone (optional)</label>
+              <input class="field__input" type="tel" id="f-phone" name="phone" autocomplete="tel">
+            </div>
 
-          <div class="field field--half">
-            <label class="field__label" for="f-people">Roughly how many people (optional)</label>
-            <input class="field__input" type="number" id="f-people" name="people" min="1" step="1" inputmode="numeric">
-          </div>
+            <div class="field field--half">
+              <label class="field__label" for="f-people">Roughly how many people (optional)</label>
+              <input class="field__input" type="number" id="f-people" name="people" min="1" step="1" inputmode="numeric">
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="f-gathering">Which gathering</label>
-            <select class="field__input field__select" id="f-gathering" name="gathering" data-gathering-select>
-              <option>[TBC: Experience 1 name]</option>
-              <option>[TBC: Experience 2 name]</option>
-              <option>[TBC: Experience 3 name]</option>
-              <option>Something else</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="field__label" for="f-gathering">Which gathering</label>
+              <select class="field__input field__select" id="f-gathering" name="gathering" data-gathering-select>
+                <option>[TBC: Experience 1 name]</option>
+                <option>[TBC: Experience 2 name]</option>
+                <option>[TBC: Experience 3 name]</option>
+                <option>Something else</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="f-message">Tell me a little about it</label>
-            <textarea class="field__input field__textarea" id="f-message" name="message" rows="5" required></textarea>
-          </div>
+            <div class="field">
+              <label class="field__label" for="f-message">Tell me a little about it</label>
+              <textarea class="field__input field__textarea" id="f-message" name="message" rows="5" required></textarea>
+            </div>
 
-          <div class="form__actions">
-            <button class="button" type="submit" data-submit>Send</button>
-            <p class="form__note">Your message comes straight to me, and I read every one.</p>
-          </div>
+            <div class="form__actions">
+              <button class="button" type="submit" data-submit>Send</button>
+              <p class="form__note">Your message comes straight to me, and I read every one.</p>
+            </div>
 
-          <p class="form__status" role="status" aria-live="polite" data-form-status></p>
-        </form>
+            <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+          </form>
 
-        <p class="form__fallback"><a class="text-link" href="mailto:merley@theluminaryatelier.com">merley@theluminaryatelier.com</a></p>
+          <p class="form__fallback"><a class="text-link" href="mailto:merley@theluminaryatelier.com">merley@theluminaryatelier.com</a></p>
+        </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" data-footer>
     <div class="container site-footer__grid">
       <div class="site-footer__brand">
         <img class="site-footer__logo" src="assets/logo/luminary-atelier-ivory.png" width="226" height="304" loading="lazy" alt="Luminary Atelier">
@@ -306,6 +390,7 @@
 
       <p class="site-footer__copy">&copy; 2026 Luminary Atelier</p>
     </div>
+    <div class="wordmark" aria-hidden="true"><span class="wordmark__text" data-wordmark data-text="Luminary Atelier"></span></div>
   </footer>
 </body>
 </html>

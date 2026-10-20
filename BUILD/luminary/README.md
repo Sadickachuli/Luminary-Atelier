@@ -12,10 +12,20 @@ A one-page static site for theluminaryatelier.com. Plain HTML, one CSS file and 
 | `js/main.js` | Menu, header, form sending |
 | `js/motion.js` | All animation, in one place |
 | `js/vendor/` | GSAP 3.15.0 (with ScrollTrigger and SplitText) and Lenis 1.3.26, saved locally |
-| `assets/logo/` | Logo, the ivory footer version, the header monogram and the favicons |
-| `assets/photos/` | The four photos, cropped and warmed, as JPEG and WebP |
+| `fonts/` | Bodoni Moda and Jost, self-hosted, with their SIL Open Font Licence files. No requests to Google. |
+| `assets/logo/` | Logo, the ivory footer version, the header monograms (ink and ivory) and the favicons |
+| `assets/photos/` | Every photo on the page, cropped and warmed, as JPEG and WebP. Made by `tools/photos.py`. |
+| `tools/photos.py` | The one list of photos: which original, which crop, which output name. Not needed on the server. |
 | `TBC-LIST.md` | Every detail still to confirm |
 | `_review/` | Screenshots from testing. Do not upload this folder. |
+
+## Swapping in Merley's original photos
+
+1. Put the originals in `ASSETS/photos/` (in the project folder, next to `BUILD/`).
+2. In `tools/photos.py`, point `SOURCES` at the new filenames and check each crop box still frames the same thing. The originals will be larger, so the boxes need scaling up.
+3. Run `python BUILD/luminary/tools/photos.py` from the project folder (needs `pip install pillow`).
+
+The output names stay the same, so the HTML does not change. If the new files have a different size, update the `width` and `height` on the matching `<img>` in `index.html` so nothing jumps while loading.
 
 ## Preview it on your computer
 
@@ -28,7 +38,7 @@ npx serve . -l 8000
 
 ## Fill in the [TBC] placeholders
 
-Everything still unknown shows on the page as `[TBC: ...]` with a dashed outline. `TBC-LIST.md` lists each one with its ID, file and line. To find them all:
+Everything still unknown shows on the page as `[TBC: ...]` in a lightly tinted note with a dotted underline. `TBC-LIST.md` lists each one with its ID, file and line. To find them all:
 
 ```
 grep -rn "\[TBC" --include=*.html .
