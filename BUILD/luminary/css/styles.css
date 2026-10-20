@@ -564,7 +564,9 @@ html.lenis, html.lenis body { height: auto; }
 
 
 /* ==========================================================================
-   1. Hero: giant tagline, floating 3D cards
+   1. Hero: the tagline on the left, a fan of floating 3D cards in its own zone.
+   The type and the photos never overlap: on desktop the cards live in the right
+   five columns; below 1024px they sit in a band above the headline, in the flow.
    ========================================================================== */
 .hero {
   position: relative;
@@ -575,10 +577,11 @@ html.lenis, html.lenis body { height: auto; }
   overflow: clip;
 }
 .hero__stage {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  height: calc(30vw * 1.25 + var(--s-4));   /* just taller than the tallest card on phones */
+  margin-top: calc(var(--header-h) + var(--s-2));
   perspective: 1400px;
-  perspective-origin: 50% 40%;
+  perspective-origin: 50% 50%;
   transform-style: preserve-3d;
   pointer-events: none;
 }
@@ -601,28 +604,39 @@ html.lenis, html.lenis body { height: auto; }
   object-fit: cover;
 }
 
-/* Desktop and tablet placement: around and partly behind the type */
-.hcard--1 { --w: 15vw; top: 13%; right: 7%; }
-.hcard--2 { --w: 13vw; top: 9%;  left: 40%; }
-.hcard--3 { --w: 11vw; top: 50%; right: 3%; }
-.hcard--4 { --w: 17vw; bottom: 7%; right: 18%; }
-.hcard--5 { --w: 11vw; top: 40%; left: 1%; }
+/* Phones: three cards fanned across the band above the headline */
+.hcard--2, .hcard--5 { display: none; }
+.hcard--1 { --w: 30vw; top: 6%;  left: 8%; }
+.hcard--3 { --w: 26vw; top: 22%; left: 37%; }
+.hcard--4 { --w: 30vw; top: 4%;  left: 62%; }
 
-/* Tablets: larger cards, filling the band between the headline and the subline */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .hcard--1 { --w: 20vw; top: 11%; right: 4%; }
-  .hcard--2 { --w: 15vw; top: 10%; left: 40%; }
-  .hcard--3 { --w: 19vw; top: 44%; right: 12%; }
-  .hcard--4 { --w: 22vw; bottom: 5%; right: 4%; }
-  .hcard--5 { --w: 21vw; top: 40%; left: 10%; }
+/* Tablets: all five cards across the band */
+@media (min-width: 768px) {
+  .hero__stage { height: calc(17vw * 1.25 + var(--s-5)); }
+  .hcard--2, .hcard--5 { display: block; }
+  .hcard--1 { --w: 17vw; top: 4%;  left: 4%; }
+  .hcard--2 { --w: 15vw; top: 20%; left: 22%; }
+  .hcard--3 { --w: 17vw; top: 2%;  left: 41%; }
+  .hcard--4 { --w: 16vw; top: 18%; left: 60%; }
+  .hcard--5 { --w: 15vw; top: 6%;  left: 79%; }
 }
 
-/* Phones: three smaller cards, tucked to the right */
-@media (max-width: 767px) {
-  .hcard--2, .hcard--5 { display: none; }
-  .hcard--1 { --w: 28vw; top: 9%; right: -3%; }
-  .hcard--3 { --w: 21vw; top: 13%; right: 34%; }
-  .hcard--4 { --w: 24vw; bottom: auto; top: 30%; right: 6%; }
+/* Desktop: the cards cluster in the right five columns, clear of the type */
+@media (min-width: 1024px) {
+  .hero__stage {
+    position: absolute;
+    top: calc(var(--header-h) + var(--s-3));
+    bottom: var(--s-4);
+    left: 62%;
+    right: 0;
+    height: auto;
+    margin: 0;
+  }
+  .hcard--1 { --w: 14vw; top: 4%;  left: 46%; }
+  .hcard--2 { --w: 12vw; top: 14%; left: 4%; }
+  .hcard--3 { --w: 12vw; top: 54%; left: 58%; }
+  .hcard--4 { --w: 15vw; top: 40%; left: 18%; }
+  .hcard--5 { --w: 11vw; top: 70%; left: 2%; }
 }
 
 .hero__inner {
@@ -631,10 +645,10 @@ html.lenis, html.lenis body { height: auto; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--s-5);
-  padding-top: calc(var(--header-h) + var(--s-3));
-  padding-bottom: var(--s-4);
+  padding-top: var(--s-4);
+  padding-bottom: var(--s-5);
 }
 .hero__title {
   font-size: var(--fs-hero);
@@ -642,24 +656,7 @@ html.lenis, html.lenis body { height: auto; }
   text-wrap: balance;
 }
 .hero__title em { font-style: italic; }
-@media (min-width: 1024px) {
-  .hero__line { display: block; }
-  .hero__line:nth-child(2) { padding-left: 1.1em; }   /* "Gathering" steps in, so the three lines read as a cascade */
-}
 .hero__foot { max-width: 34rem; }
-@media (min-width: 1024px) {
-  /* subline on the left, the intro line and the button beside it, so the button sits above the fold */
-  .hero__foot {
-    max-width: none;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gutter);
-    align-items: start;
-  }
-  .hero__subline { grid-column: 1 / span 4; }
-  .hero__intro { grid-column: 5 / span 4; margin-top: 0; }
-  .hero__foot .button { grid-column: 5 / span 4; justify-self: start; }
-}
 .hero__subline {
   font-size: var(--fs-lead);
   line-height: 1.55;
@@ -670,8 +667,16 @@ html.lenis, html.lenis body { height: auto; }
   margin-top: var(--s-3);
   margin-bottom: var(--s-4);
 }
-@media (max-width: 767px) {
-  .hero__inner { padding-top: calc(var(--header-h) + 26vh); }
+@media (min-width: 1024px) {
+  .hero__inner { justify-content: space-between; padding-top: calc(var(--header-h) + var(--s-5)); padding-bottom: var(--s-4); }
+  /* the type keeps to the left seven columns, sized so "with Gratitude" fits on one line */
+  .hero__title {
+    font-size: clamp(3.5rem, 7.4vw, 7.5rem);
+    max-width: calc((100% + var(--gutter)) * 7 / 12 - var(--gutter));
+  }
+  .hero__line { display: block; }
+  .hero__line:nth-child(2) { padding-left: 1.1em; }   /* "Gathering" steps in, so the three lines read as a cascade */
+  .hero__foot { max-width: calc((100% + var(--gutter)) * 6 / 12 - var(--gutter)); }
 }
 
 

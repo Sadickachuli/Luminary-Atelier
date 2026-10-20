@@ -108,7 +108,7 @@
     var cards = gsap.utils.toArray('.hcard');
     if (hero && cards.length) {
       // On scroll, the cards spread apart and come towards the viewer as the hero leaves.
-      var stageBox = hero.getBoundingClientRect();
+      var stageBox = document.querySelector('[data-hero-stage]').getBoundingClientRect();
       var exitTl = gsap.timeline({
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true }
       });
@@ -117,10 +117,11 @@
         var dx = (b.left + b.width / 2) - (stageBox.left + stageBox.width / 2);
         var dy = (b.top + b.height / 2) - (stageBox.top + stageBox.height / 2);
         var depth = parseFloat(getComputedStyle(card).getPropertyValue('--depth')) || 1;
+        // gentle enough that no card drifts across the headline as the hero scrolls away
         exitTl.to(card.querySelector('.hcard__exit'), {
-          x: dx * 0.6,
-          y: dy * 0.4 - 80,
-          z: 260 * depth,
+          x: dx * 0.3,
+          y: dy * 0.3 - 60,
+          z: 160 * depth,
           ease: 'none'
         }, 0);
       });
